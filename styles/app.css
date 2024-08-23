@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/** 
+// FOR TRANSITION GROUP (Flip Animations)
+// You need to add this class to all the "items" of a list that you want animated.
+// Then add it to <TransitionGroup name="group-item"> as well.
+*/
+.group-item {
+  transition: all 0.4s ease-in-out;
+}
+
+.group-item-enter,
+.group-item-exit-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.group-item-exit-active {
+  position: absolute;
+}

@@ -23,6 +23,7 @@ import ui from "@/assets/ui.png";
 import wallet from "@/assets/wallet.png";
 import yeti from "@/assets/yeti.png";
 import { cn } from "@/utils/cn.util";
+import { TransitionGroup } from "solid-transition-group";
 
 const InstanceIdContext = createContext<() => string | null>(() => null);
 
@@ -61,7 +62,7 @@ const Item = (props: VoidProps<{ src: string }>) => {
 
   // Use the `state` to style.
   return (
-    <div>
+    <div class="group-item">
       <img
         ref={ref}
         class={cn(
@@ -69,7 +70,9 @@ const Item = (props: VoidProps<{ src: string }>) => {
           state() === "idle" && "hover:shadow-lg",
           state() === "dragging" && "grayscale-[0.8]",
           state() === "over" && "scale-[1.1] rotate-[8deg] brightness-[1.15] shadow-lg",
-          props.src.includes("yeti") && "bg-yellow-500 w-20 h-20"
+          "w-44 h-44",
+          props.src.includes("yeti") && "bg-yellow-500 w-20 h-20",
+          props.src.includes("koala") && "bg-yellow-500 w-32 h-32"
         )}
         // Avoid 'save image' popup on iOS
         style="-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;"
@@ -85,16 +88,12 @@ export default function Page() {
   const [instanceId] = createSignal<string>("instance-id");
 
   createEffect(() => {
-    console.log("[on]", 1);
-
     onCleanup(
       monitorForElements({
         canMonitor({ source }) {
-          console.log("canMonitor", { source });
           return source.data.instanceId === instanceId();
         },
         onDrop({ source, location }) {
-          console.log("onDrop", { source, location });
           const destination = location.current.dropTargets[0];
           if (!destination) {
             return;
@@ -124,8 +123,10 @@ export default function Page() {
   return (
     <div class="max-w-2xl mx-auto">
       <InstanceIdContext.Provider value={instanceId}>
-        <div class="grid grid-cols-3 gap-4 p-8">
-          <For each={items}>{(src) => <Item src={src} />}</For>
+        <div class="flex flex-wrap gap-4 p-8">
+          <TransitionGroup name="group-item">
+            <For each={items}>{(src) => <Item src={src} />}</For>
+          </TransitionGroup>
         </div>
       </InstanceIdContext.Provider>
     </div>
