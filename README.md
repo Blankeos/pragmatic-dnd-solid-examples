@@ -7,4 +7,4 @@ bun install
 bun dev
 ```
 
-> Bootsrapped with [Solid Hop](https://github.com/blankeos/solid-hop)\*\*\*\*
+> Bootsrapped with [Solid Hop](https://github.com/blankeos/solid-hop)
